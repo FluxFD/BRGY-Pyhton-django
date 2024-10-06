@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   logoutBtn.addEventListener("click", (event) => {
     event.preventDefault();
     localStorage.removeItem("token");
-    window.location.href = "/login/";
+    window.location.href = "/";
   });
 
   function setFormMethod(method) {
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
   async function fetchResidents() {
     const token = localStorage.getItem("token");
     if (!token) {
-      window.location.href = "/login/";
+      window.location.href = "/";
       return;
     }
 
@@ -111,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
         displayResidents(residents);
       } else if (response.status === 401) {
         localStorage.removeItem("token");
-        window.location.href = "/login/";
+        window.location.href = "/";
       } else {
         console.error("Failed to fetch residents");
         residentsList.innerHTML =

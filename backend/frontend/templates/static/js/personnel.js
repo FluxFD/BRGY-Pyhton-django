@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <th>Gender</th>
           <th>Username</th>
           <th>Address</th>
-          <th>Actions</th>
+          <th> ${userType == "Brgy. Admin" ? "Actions" : ""}</th>
         </tr>
       </thead>
       <tbody>
@@ -54,12 +54,18 @@ document.addEventListener("DOMContentLoaded", () => {
             <td>${person.username}</td>
             <td>${person.address || "-"}</td>
             <td>
+              ${
+                userType == "Brgy. Admin"
+                  ? `
               <i class="fas fa-edit me-2 edit-personnel" data-personnel='${JSON.stringify(
                 person
               )}' style="color: #28a745;" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit Personnel"></i>
               <i class="fas fa-trash delete-personnel" data-personnel-id="${
                 person.id
               }" style="color: #dc3545;" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete Personnel"></i>
+              `
+                  : ""
+              }
             </td>
           </tr>
         `
@@ -72,13 +78,15 @@ document.addEventListener("DOMContentLoaded", () => {
     personnelContainer.appendChild(table);
 
     // Attach event listeners for edit and delete icons
-    document.querySelectorAll(".edit-personnel").forEach((icon) => {
-      icon.addEventListener("click", handleEditClick);
-    });
+    if (userType == "Brgy. Admin") {
+      document.querySelectorAll(".edit-personnel").forEach((icon) => {
+        icon.addEventListener("click", handleEditClick);
+      });
 
-    document.querySelectorAll(".delete-personnel").forEach((icon) => {
-      icon.addEventListener("click", handleDeleteClick);
-    });
+      document.querySelectorAll(".delete-personnel").forEach((icon) => {
+        icon.addEventListener("click", handleDeleteClick);
+      });
+    }
 
     // Initialize Bootstrap tooltips
     const tooltipTriggerList = [].slice.call(
@@ -183,9 +191,7 @@ document
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    const url = personnelId
-      ? `/brgy/users/${personnelId}/`
-      : "/brgy/users/";
+    const url = personnelId ? `/brgy/users/${personnelId}/` : "/brgy/users/";
     const method = personnelId ? "PUT" : "POST";
 
     try {
@@ -241,6 +247,9 @@ document
       .getElementById("createPersonnelForm")
       .removeAttribute("data-personnel-id");
     document.getElementById("createPersonnelForm").reset();
+
+    const passwordField = document.getElementById("password");
+    passwordField.disabled = false;
   });
 
 const printPersonnelData = () => {
@@ -250,7 +259,9 @@ const printPersonnelData = () => {
     .cloneNode(true);
 
   // Remove the last column (Actions) for print view
-  personnelTable.querySelectorAll("thead th:last-child, tbody td:last-child").forEach(el => el.remove());
+  personnelTable
+    .querySelectorAll("thead th:last-child, tbody td:last-child")
+    .forEach((el) => el.remove());
 
   const printContent = `
     <html>

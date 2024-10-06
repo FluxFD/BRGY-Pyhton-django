@@ -11,15 +11,15 @@ def login(request):
 def register(request):
     return render(request, 'frontend/pages/register.html')
 
-@login_required(login_url='/login/')
+@login_required(login_url='/')
 def residents(request):
     return render(request, 'frontend/pages/residents.html')
 
-@login_required(login_url='/login/')
+@login_required(login_url='/')
 def households(request):
     return render(request, 'frontend/pages/households.html')
 
-@login_required(login_url='/login/')
+@login_required(login_url='/')
 def personnel(request):
     return render(request, 'frontend/pages/personnel.html')
 

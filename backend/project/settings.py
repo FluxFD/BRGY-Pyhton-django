@@ -95,7 +95,7 @@ STATICFILES_DIRS = [
 ]
 WSGI_APPLICATION = 'project.wsgi.application'
 
-LOGIN_URL = '/login/'
+LOGIN_URL = '/'
 
 
 # Database
